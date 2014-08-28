@@ -39,26 +39,28 @@
 	var statusx = document.getElementById('status');
 	var timeLogList = document.getElementById('time-log-list');
 	var totalSpan = document.getElementById('total');
-	var data;
+	var dataIn;
 	var total = 0;
 	var source = new EventSource('https://api.spark.io/v1/events/motion-detected?access_token=5a4501e8e5d6ab780731274e000a5894657f9d10');
-	var updateTotal = function(){
-		$.getJSON('https://api.spark.io/v1/devices/55ff6d065075555335341887/total?access_token=5a4501e8e5d6ab780731274e000a5894657f9d10',
-		function(data){
-			total = parseInt(data.result);
-			totalSpan.innerHTML = total;
-			console.log(total);
-		});
-	};
+	// var updateTotal = function(){
+	// 	$.getJSON('https://api.spark.io/v1/devices/55ff6d065075555335341887/total?access_token=5a4501e8e5d6ab780731274e000a5894657f9d10',
+	// 	function(data){
+	// 		total = parseInt(data.result);
+	// 		totalSpan.innerHTML = total;
+	// 		console.log(total);
+	// 	});
+	// };
 	source.addEventListener('motion-detected', function(e) {
-		data = JSON.parse(e.data);
-		timeLogList.innerHTML += data.published_at + '<br>';
-		updateTotal();
+		dataIn = JSON.parse(e.data);
+		timeLogList.innerHTML += dataIn.published_at + '<br>';
+		//updateTotal();
+		totalSpan.innerHTML = parseInt(dataIn.data);
 		statusx.childNodes[0].className = 'high';
 	}, false);
 	source.addEventListener('motion-detected-out', function(e) {
-		data = JSON.parse(e.data);
-		updateTotal();
+		dataIn = JSON.parse(e.data);
+		//updateTotal();
+		//totalSpan.innerHTML = parseInt(dataIn.data);
 		statusx.childNodes[0].className = 'low';
 	}, false);
 	</script>
