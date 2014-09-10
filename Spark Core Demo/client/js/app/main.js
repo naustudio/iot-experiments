@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	// Get Temperature
-	$.getJSON('http://192.168.0.104:8082/temperature',function(data) {
+	$.getJSON('http://localhost:8082/temperature',function(data) {
 		//Temperature code here
 		var collectedTemperatureData = [],
 			timeTemperatureData = [];
@@ -34,7 +34,7 @@ $(document).ready(function() {
 	});
 
 	// Get Motions
-	$.getJSON('http://192.168.0.104:8082/date/',function(data) {
+	$.getJSON('http://localhost:8082/date/',function(data) {
 		//Motion code here
 		var html = '';
 		var i;
