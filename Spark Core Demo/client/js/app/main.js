@@ -1,3 +1,4 @@
+'use strict';
 $(document).ready(function() {
 	// Get Temperature
 	$.getJSON('http://localhost:8082/temperature',function(data) {
@@ -53,9 +54,9 @@ $(document).ready(function() {
 			$('#list-time ul').append(html);
 		}
 		var period = 24; // 1 day = 24 hours
-		var startTime = new Date(data.data[0].data.datetime);
+		var startTime = data.data[0] ? new Date(data.data[0].data.datetime) : new Date();
 		var startHour = startTime.getHours();
-		var endTime = new Date(data.data[data.data.length - 1].data.datetime);
+		var endTime = data.data[data.data.length - 1] ? new Date(data.data[data.data.length - 1].data.datetime) : new Date();
 		var endHour = endTime.getHours();
 		var tempDate;
 		var number = 0;
