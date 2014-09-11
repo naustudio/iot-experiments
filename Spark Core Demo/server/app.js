@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var request = require('request');
 //var fs = require('fs');
 var app = express();
+var temperatureTime = 600000;
 //App config
 
 
@@ -46,7 +47,6 @@ mongoclient.connect('mongodb://localhost:27017', connectSetting, function(msg/*,
 			}
 		});
 	});
-
 });
 
 function getNaucoreData() {
@@ -140,7 +140,8 @@ app.get('/temperature',function(req, res) {
 				}
 			}
 			res.json({
-				data: ArrayDataTemperature
+				data: ArrayDataTemperature,
+				perTime : temperatureTime
 			});
 			//console.log(ArrayDataTemperature);
 		});
@@ -212,7 +213,7 @@ function getTemperature() {
 getTemperature();
 setInterval(function() {
 	getTemperature();
-},300000);
+},temperatureTime);
 
 
 app.listen(port);
