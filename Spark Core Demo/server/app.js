@@ -121,8 +121,10 @@ app.get('/temperature',function(req, res) {
 	db.naucoreTemperature.find({ 'data.datetime' : todayString }, function(err,items) {
 		console.log(todayString);
 		items.toArray(function(err, items ) {
-			for (var i = 0; i < items.length; i++ ) {
-				ArrayDataTemperature.push(items[i]);
+			if (items){
+				for (var i = 0; i < items.length; i++ ) {
+					ArrayDataTemperature.push(items[i]);
+				}
 			}
 			res.json({
 				data: ArrayDataTemperature
