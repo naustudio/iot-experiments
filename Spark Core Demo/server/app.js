@@ -31,7 +31,7 @@ mongoclient.connect('mongodb://localhost:27017', connectSetting, function(msg/*,
 	}else {
 		console.log('Connected to database ');
 	}
-	db = mongoclient.db('test');
+	db = mongoclient.db('iot-experiment');
 	getNaucoreData();
 
 });
