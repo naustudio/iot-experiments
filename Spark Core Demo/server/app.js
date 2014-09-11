@@ -11,7 +11,7 @@ var app = express();
 
 var	port = process.env.PORT || 8182; // set our port
 
-app.use(express.static(__dirname + '/client'));
+app.use(express.static(__dirname + './client'));
 //app.use(express.static(__dirname + '../client'));
 
 
