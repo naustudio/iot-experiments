@@ -78,6 +78,7 @@ es.on('motion-detected', function(e) {
 		}
 	};
 	db.naucore.insert(obj,function(/*err,items*/) {
+		console.log(obj);
 	});
 });
 
