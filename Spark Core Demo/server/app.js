@@ -196,6 +196,7 @@ function getTemperature() {
 		}
 	});
 }
+getTemperature();
 setInterval(function() {
 	getTemperature();
 },300000);
