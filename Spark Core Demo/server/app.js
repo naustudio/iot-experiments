@@ -145,6 +145,8 @@ app.get('/list',function(req, res) {
 					ArrayData.push(items[i]);
 					res.write('data : { data : ' + JSON.stringify(items[i]) + '}\n\n');
 				}
+			}else {
+				res.write('data : { data : [] }\n\n');
 			}
 		});
 	});
@@ -164,6 +166,8 @@ app.get('/dates',function(req, res) {
 					ArrayData.push(items[i]);
 					res.write('data : { data : ' + JSON.stringify(items[i]) + '}\n\n');
 				}
+			}else {
+				res.write('data : { data : [] }\n\n');
 			}
 		});
 	});
