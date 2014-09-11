@@ -25,7 +25,7 @@ var db;
 var mongoclient = new MongoClient( /*server, {native_parser: true}*/ );
 
 app.get('/', function(req,res) {
-	res.sendfile('../client/index.html');
+	res.sendfile('./client/index.html');
 });
 
 
