@@ -11,9 +11,6 @@ var app = express();
 
 var	port = process.env.PORT || 8182; // set our port
 
-app.use('/client', express.static(__dirname + '../client'));
-//app.use(express.static(__dirname + '../client'));
-
 
 var es = new EventSource('https://api.spark.io/v1/events/motion-detected?access_token=5a4501e8e5d6ab780731274e000a5894657f9d10');
 
@@ -25,7 +22,9 @@ var db;
 var mongoclient = new MongoClient( /*server, {native_parser: true}*/ );
 
 
-
+app.get('/', function(req,res) {
+	res.sendfile('../client/index.html');
+});
 
 // Connecting with MongoDB
 mongoclient.connect('mongodb://localhost:27017', connectSetting, function(msg/*, returnedDb*/) {
