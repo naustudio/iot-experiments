@@ -11,7 +11,7 @@ var app = express();
 
 var	port = process.env.PORT || 8182; // set our port
 
-app.use(express.static(__dirname + './client'));
+app.use('/', express.static(__dirname + './client'));
 //app.use(express.static(__dirname + '../client'));
 
 
@@ -24,9 +24,9 @@ var MongoClient = Mongo.MongoClient;
 var db;
 var mongoclient = new MongoClient( /*server, {native_parser: true}*/ );
 
-app.get('/', function(req,res) {
+/*app.get('/', function(req,res) {
 	res.sendfile('./client/index.html');
-});
+});*/
 
 
 // Connecting with MongoDB
