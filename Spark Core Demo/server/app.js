@@ -140,7 +140,7 @@ app.get('/list',function(req, res) {
 				'Cache-Control': 'no-cache',
 				'Connection': 'keep-alive'
 			});*/
-			if (items.length){
+			if (items){
 				for (var i = 0; i < items.length; i++ ) {
 					ArrayData.push(items[i]);
 					res.write('data : { data : ' + JSON.stringify(items[i]) + '}\n\n');
@@ -159,7 +159,7 @@ app.get('/dates',function(req, res) {
 				'Cache-Control': 'no-cache',
 				'Connection': 'keep-alive'
 			});*/
-			if (items.length){
+			if (items){
 				for (var i = 0; i < items.length; i++ ) {
 					ArrayData.push(items[i]);
 					res.write('data : { data : ' + JSON.stringify(items[i]) + '}\n\n');
