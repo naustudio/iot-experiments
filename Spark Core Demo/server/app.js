@@ -3,18 +3,14 @@ var Mongo = require('mongodb');
 var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
+var temperatureTime = 600000;
 //var fs = require('fs');
 var app = express();
-var temperatureTime = 600000;
 //App config
 
 
 
 var	port = process.env.PORT || 8182; // set our port
-
-app.use(express.static('./client'));
-//app.use(express.static(__dirname + '/client'));
-
 
 var es = new EventSource('https://api.spark.io/v1/events/motion-detected?access_token=5a4501e8e5d6ab780731274e000a5894657f9d10');
 
@@ -25,9 +21,7 @@ var MongoClient = Mongo.MongoClient;
 var db;
 var mongoclient = new MongoClient( /*server, {native_parser: true}*/ );
 
-/*app.get('/', function(req,res) {
-	res.sendfile('./client/index.html');
-});*/
+app.use(express.static('./client'));
 
 
 // Connecting with MongoDB
@@ -37,16 +31,9 @@ mongoclient.connect('mongodb://localhost:27017', connectSetting, function(msg/*,
 	}else {
 		console.log('Connected to database ');
 	}
-	db = new Mongo.Db('iot-experiment', new Mongo.Server('localhost', 27017));
-	// Establish connection to db
-	db.open(function(err, db) {
-		db.authenticate('siteadmin', 'nau@123', function(err, result) {
-			if (result){
-				db = mongoclient.db('iot-experiment');
-				getNaucoreData();
-			}
-		});
-	});
+	db = mongoclient.db('test');
+	getNaucoreData();
+
 });
 
 function getNaucoreData() {
@@ -78,7 +65,6 @@ es.on('motion-detected', function(e) {
 		}
 	};
 	db.naucore.insert(obj,function(/*err,items*/) {
-		console.log(obj);
 	});
 });
 
@@ -101,7 +87,29 @@ app.get('/dates/:datetime',function(req, res) {
 			for (var i = 0; i < items.length; i++ ) {
 				ArrayData.push(items[i]);
 			}
-			res.json({ data: ArrayData });
+			res.json({
+				data: ArrayData
+			});
+			console.log(items);
+		});
+	});
+});
+
+// Get motion data with option specific datetime
+app.get('/temperature/:datetime',function(req, res) {
+	ArrayData.length = 0;
+	var day = new Date(req.params.datetime);
+	var dayString = day.toDateString();
+	dayString = new RegExp(dayString);
+	db.naucoreTemperature.find({'data.datetime' : dayString},function(err,items) {
+		items.toArray(function(err, items ) {
+			for (var i = 0; i < items.length; i++ ) {
+				ArrayData.push(items[i]);
+			}
+			res.json({
+				data: ArrayData,
+				total: ArrayData.length
+			});
 			console.log(items);
 		});
 	});
@@ -214,7 +222,7 @@ function getTemperature() {
 getTemperature();
 setInterval(function() {
 	getTemperature();
-},temperatureTime);
+},300000);
 
 
 app.listen(port);
