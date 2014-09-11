@@ -9,7 +9,7 @@ var app = express();
 
 
 
-var	port = process.env.PORT || 8082; // set our port
+var	port = process.env.PORT || 8182; // set our port
 
 
 var es = new EventSource('https://api.spark.io/v1/events/motion-detected?access_token=5a4501e8e5d6ab780731274e000a5894657f9d10');
@@ -52,6 +52,23 @@ app.use(bodyParser.json());
 
 var ArrayData = [],ArrayDataTemperature = [];
 
+// Detecting Motions Listener
+es.on('motion-detected', function(e) {
+	var objData;
+	eval('objData = ' + e.data);
+	var obj = {
+		data : {
+			core_id : objData.coreid,
+			datetime : new Date(objData.published_at).toString(),
+			total_times : objData.data,
+			time_to_live : objData.ttl
+		}
+	};
+	db.naucore.insert(obj,function(/*err,items*/) {
+	});
+});
+
+// Cross Domain fixed
 app.use(function (req, res, next) {
 	res.set('Access-Control-Allow-Origin', '*');
 	res.set('Access-Control-Allow-Methods', 'POST, GET, DELETE, PUT, OPTIONS');
@@ -59,6 +76,7 @@ app.use(function (req, res, next) {
 	next();
 });
 
+// Get motion data with option specific datetime
 app.get('/dates/:datetime',function(req, res) {
 	ArrayData.length = 0;
 	var day = new Date(req.params.datetime);
@@ -75,6 +93,7 @@ app.get('/dates/:datetime',function(req, res) {
 	});
 });
 
+// Get motion data today
 app.get('/date',function(req, res) {
 	var today = new Date();
 	var todayString = today.toDateString();
@@ -93,7 +112,7 @@ app.get('/date',function(req, res) {
 		});
 	});
 });
-
+// Get temperature data today
 app.get('/temperature',function(req, res) {
 	var today = new Date();
 	var todayString = today.toDateString();
@@ -112,7 +131,7 @@ app.get('/temperature',function(req, res) {
 		});
 	});
 });
-
+// Get all motion data
 app.get('/list',function(req, res) {
 	db.naucore.find(function(err,items) {
 		items.toArray(function(err, items ) {
@@ -129,29 +148,15 @@ app.get('/list',function(req, res) {
 	});
 });
 
-es.on('motion-detected', function(e) {
-	var objData;
-	eval('objData = ' + e.data);
-	var obj = {
-		data : {
-			core_id : objData.coreid,
-			datetime : new Date(objData.published_at).toString(),
-			total_times : objData.data,
-			time_to_live : objData.ttl
-		}
-	};
-	db.naucore.insert(obj,function(/*err,items*/) {
-	});
-});
-
+// Get all motion data
 app.get('/dates',function(req, res) {
 	db.naucore.find(function(err,items) {
 		items.toArray(function(err, items ) {
-			res.writeHead(200, {
+			/*res.writeHead(200, {
 				'Content-Type': 'text/event-stream',
 				'Cache-Control': 'no-cache',
 				'Connection': 'keep-alive'
-			});
+			});*/
 			for (var i = 0; i < items.length; i++ ) {
 				ArrayData.push(items[i]);
 				res.write('data : { data : ' + JSON.stringify(items[i]) + '}\n\n');
@@ -160,6 +165,7 @@ app.get('/dates',function(req, res) {
 	});
 });
 
+// Get temperature each 30 minutes
 function getTemperature() {
 	request({
 		url: 'https://api.spark.io/v1/devices/55ff6d065075555335341887/temperature?access_token=5a4501e8e5d6ab780731274e000a5894657f9d10',
