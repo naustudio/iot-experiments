@@ -140,9 +140,11 @@ app.get('/list',function(req, res) {
 				'Cache-Control': 'no-cache',
 				'Connection': 'keep-alive'
 			});*/
-			for (var i = 0; i < items.length; i++ ) {
-				ArrayData.push(items[i]);
-				res.write('data : { data : ' + JSON.stringify(items[i]) + '}\n\n');
+			if (items.length){
+				for (var i = 0; i < items.length; i++ ) {
+					ArrayData.push(items[i]);
+					res.write('data : { data : ' + JSON.stringify(items[i]) + '}\n\n');
+				}
 			}
 		});
 	});
@@ -157,9 +159,11 @@ app.get('/dates',function(req, res) {
 				'Cache-Control': 'no-cache',
 				'Connection': 'keep-alive'
 			});*/
-			for (var i = 0; i < items.length; i++ ) {
-				ArrayData.push(items[i]);
-				res.write('data : { data : ' + JSON.stringify(items[i]) + '}\n\n');
+			if (items.length){
+				for (var i = 0; i < items.length; i++ ) {
+					ArrayData.push(items[i]);
+					res.write('data : { data : ' + JSON.stringify(items[i]) + '}\n\n');
+				}
 			}
 		});
 	});
