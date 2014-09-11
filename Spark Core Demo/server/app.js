@@ -31,8 +31,14 @@ mongoclient.connect('mongodb://localhost:27017', connectSetting, function(msg/*,
 	}else {
 		console.log('Connected to database ');
 	}
-	db = mongoclient.db('iot-experiment');
-	getNaucoreData();
+	db.authenticate('siteadmin', 'nau@123', function(err, result) {
+		//assert.equal(true, result);
+		if (result){
+			db = mongoclient.db('iot-experiment');
+			getNaucoreData();
+		}
+		//db.close();
+	});
 
 });
 
