@@ -3,11 +3,12 @@ $(document).ready(function() {
 	// Get Temperature
 	$.getJSON('http://localhost:8082/temperature',function(data) {
 		//Temperature code here
+		var minutes = Math.floor(data.perTime / 60000);
 		var collectedTemperatureData = [],
 			timeTemperatureData = [];
 		for (var i = 0; i < data.data.length; i++) {
 			collectedTemperatureData.push(data.data[i].data.temperature);
-			timeTemperatureData.push(5 * i + ' min(s)');
+			timeTemperatureData.push(minutes * i + ' min(s)');
 		}
 
 		var lineChartData = {
