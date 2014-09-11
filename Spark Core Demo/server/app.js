@@ -11,6 +11,8 @@ var app = express();
 
 var	port = process.env.PORT || 8182; // set our port
 
+app.use(express.static(__dirname + '/client'));
+
 
 var es = new EventSource('https://api.spark.io/v1/events/motion-detected?access_token=5a4501e8e5d6ab780731274e000a5894657f9d10');
 
