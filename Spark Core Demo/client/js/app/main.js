@@ -1,5 +1,46 @@
 'use strict';
 $(document).ready(function() {
+	$(function () {
+		$('#datetimepicker1').datepicker('update', new Date()).on('changeDate', function( e ) {
+			console.log(e);
+			var selectedDate = (new Date(e.date)).toDateString();
+			console.log(selectedDate);
+			$.getJSON('http://192.168.0.199:8182/temperature/' + selectedDate,function(data) {
+				console.log(data);
+				//var minutes = Math.floor(data.perTime / 60000);
+				var collectedTemperatureData = [],
+					timeTemperatureData = [];
+				for (var i = 0; i < data.data.length; i++) {
+					collectedTemperatureData.push(data.data[i].data.temperature);
+					timeTemperatureData.push(10 * i + ' min(s)');
+				}
+				var lineChartData = {
+					labels : timeTemperatureData,
+					datasets : [
+						{
+							label: 'Temperature Dataset',
+							fillColor : 'rgba(232, 44, 12,0.8)',
+							strokeColor : 'rgba(220,220,220,1)',
+							pointColor : 'rgba(220,220,220,1)',
+							pointStrokeColor : '#000',
+							pointHighlightFill : 'rgba(255,255,255,.9)',
+							pointHighlightStroke : 'rgba(220,220,220,1)',
+							data : collectedTemperatureData
+						}
+					]
+				};
+				$('#temp-chart').html($('#temp-chart').html());
+				var ctx = document.getElementById('canvas-temp-chart').getContext('2d');
+				window.myTemperature = new Chart(ctx).Line(lineChartData, {
+					responsive: true,
+					scaleFontColor: '#fff',
+					scaleLineColor: 'rgba(255,255,255,.9)',
+					scaleGridLineColor : 'rgb(255,255,255)'
+				});
+				//window.myTemperature.update();
+			});
+		});
+	});
 	// Get Temperature
 	$.getJSON('http://192.168.0.199:8182/temperature',function(data) {
 		//Temperature code here
@@ -28,7 +69,7 @@ $(document).ready(function() {
 			]
 		};
 		var ctx = document.getElementById('canvas-temp-chart').getContext('2d');
-		window.myLine = new Chart(ctx).Line(lineChartData, {
+		window.myTemperature = new Chart(ctx).Line(lineChartData, {
 			responsive: true,
 			scaleFontColor: '#fff',
 			scaleLineColor: 'rgba(255,255,255,.9)',
@@ -95,7 +136,7 @@ $(document).ready(function() {
 				]
 			};
 			var cty = document.getElementById('canvas-motion-chart').getContext('2d');
-			window.myLine = new Chart(cty).Bar(lineChartData, {
+			window.myMotions = new Chart(cty).Bar(lineChartData, {
 				responsive: false,
 				scaleFontColor: '#fff',
 				scaleLineColor: 'rgba(255,255,255,.9)',

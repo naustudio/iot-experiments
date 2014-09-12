@@ -10,7 +10,7 @@ var temperatureTime = 600000;
 
 
 
-var	port = process.env.PORT || 8182; // set our port
+var	port = process.env.PORT || 3000; // set our port
 
 app.use(express.static('./client'));
 //app.use(express.static(__dirname + '/client'));
@@ -102,6 +102,26 @@ app.get('/dates/:datetime',function(req, res) {
 				ArrayData.push(items[i]);
 			}
 			res.json({ data: ArrayData });
+			console.log(items);
+		});
+	});
+});
+
+// Get motion data with option specific datetime
+app.get('/temperature/:datetime',function(req, res) {
+	ArrayData.length = 0;
+	var day = new Date(req.params.datetime);
+	var dayString = day.toDateString();
+	dayString = new RegExp(dayString);
+	db.naucoreTemperature.find({'data.datetime' : dayString},function(err,items) {
+		items.toArray(function(err, items ) {
+			for (var i = 0; i < items.length; i++ ) {
+				ArrayData.push(items[i]);
+			}
+			res.json({
+				data: ArrayData,
+				total: ArrayData.length
+			});
 			console.log(items);
 		});
 	});
