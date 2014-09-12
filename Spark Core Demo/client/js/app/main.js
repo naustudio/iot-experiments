@@ -5,7 +5,7 @@ $(document).ready(function() {
 			console.log(e);
 			var selectedDate = (new Date(e.date)).toDateString();
 			console.log(selectedDate);
-			$.getJSON('http://192.168.0.199:8182/temperature/' + selectedDate,function(data) {
+			$.getJSON('http://192.168.0.199:3000/temperature/' + selectedDate,function(data) {
 				console.log(data);
 				//var minutes = Math.floor(data.perTime / 60000);
 				var collectedTemperatureData = [],
@@ -42,7 +42,7 @@ $(document).ready(function() {
 		});
 	});
 	// Get Temperature
-	$.getJSON('http://192.168.0.199:8182/temperature',function(data) {
+	$.getJSON('http://192.168.0.199:3000/temperature',function(data) {
 		//Temperature code here
 		console.log(data);
 		var minutes = Math.floor(data.perTime / 60000);
@@ -78,7 +78,7 @@ $(document).ready(function() {
 	});
 
 	// Get Motions
-	$.getJSON('http://192.168.0.199:8182/date/',function(data) {
+	$.getJSON('http://192.168.0.199:3000/date/',function(data) {
 		//Motion code here
 		var html = '';
 		var i;
