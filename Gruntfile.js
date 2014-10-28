@@ -36,8 +36,8 @@ module.exports = function (grunt) {
 			dist: '~dist',
 			install: 'assets/install-page',
 			upload: '~upload',
-			ftpremote: '/karahappy/projects/staging',
-			ftpdoc: 'karahappy/docs'
+			ftpremote: '/iot-experiment/projects/staging',
+			ftpdoc: 'iot-experiment/docs'
 		},
 		//banner metadata displaying copyright notice after minification
 		meta: {

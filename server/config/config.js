@@ -22,7 +22,7 @@ var platformConfig = {
 		},
 		publicFolder: './client/',
 		mongo: {
-			url: 'mongodb://192.168.0.199:27017/iot-experiment',
+			url: 'mongodb://localhost:27017/iot-experiment',//'mongodb://192.168.0.199:27017/iot-experiment'
 			dbUser: 'siteadmin',
 			password: 'nau@123'
 		},
@@ -37,6 +37,10 @@ var platformConfig = {
 				clientSecret: 'cccv0t6x2jaQst0buQ5jmJYC',
 				callbackUrl: 'http://localhost:3000/signin/google/callback'
 			}
+		},
+		spark: {
+			username: 'device@naustud.io',
+			password: 'nau110114',//credential information should be kept secret
 		}
 	},
 

@@ -4,14 +4,16 @@
  * Entry point for server app. Initiates database connection and starts listening for requests on configured port.
  */
 
-var config = require('./config/config'),
-		mongo = require('./config/mongo'),
-		mongoSeed = require('./config/mongo-seed'),
-		koaConfig = require('./config/koa'),
-		// path = require("path"),
-		co = require('co'),
-		koa = require('koa'),
-		app = koa();
+var config = require('./config/config');
+var mongo = require('./config/mongo');
+var mongoSeed = require('./config/mongo-seed');
+var koaConfig = require('./config/koa');
+	// path = require("path"),
+var co = require('co');
+var koa = require('koa');
+var app = koa();
+var spark = require('./middlewares/spark-cloud/spark');
+var SparkSetting = require('./model/SparkSetting');
 //load patch
 require('./middlewares/patch');
 
@@ -25,11 +27,16 @@ app.init = co(function *() {
 	// koa config
 	koaConfig(app);
 
+	//init spark module
+	spark.init(new SparkSetting({
+		username: config.spark.username,
+		password: config.spark.password
+	}));
 	// create http and websocket servers and start listening for requests
 	app.server = app.listen(config.app.port);
 	// ws.listen(app.server);
 	if (config.app.env !== 'test') {
-		console.log('Karahappy listening on port ' + config.app.port);
+		console.log('Web server listening on port ' + config.app.port);
 	}
 });
 
